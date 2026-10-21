@@ -49,4 +49,6 @@ The flagged list is a starting point, not the scope. Look at all important softw
 - **Fix commands** for each item that needs action, grouped by package manager or update method. Note which apps update themselves and only need a relaunch.
 - **Sources** for the "latest version" figures.
 
+Before suggesting an uninstall or cleanup, check what else depends on it, including software the package manager doesn't track, such as runtimes built by version managers. The platform guide explains how.
+
 Don't run any update, uninstall or cleanup command until the user confirms. Read-only discovery commands are fine.

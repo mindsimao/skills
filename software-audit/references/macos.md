@@ -58,9 +58,26 @@ softwareupdate -l
 pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
 ```
 
+## Before suggesting removals
+
+Homebrew only knows what other Homebrew packages depend on. Runtimes built by asdf, mise, rbenv, pyenv or nvm often link against Homebrew libraries (OpenSSL, readline, libyaml, gmp, libffi), and `brew autoremove` or `brew uninstall` will break them without warning. For example, removing `openssl@3` stops every Ruby built against it from loading OpenSSL, so Bundler and gem installs fail.
+
+Check what those runtimes link against before suggesting any removal:
+
+```bash
+find ~/.asdf/installs ~/.local/share/mise/installs ~/.rbenv/versions ~/.pyenv/versions ~/.nvm/versions \
+  \( -name '*.bundle' -o -name '*.so' -o -name '*.dylib' \) 2>/dev/null |
+  xargs otool -L 2>/dev/null | grep -o '/opt/homebrew/opt/[^/]*' | sort -u
+```
+
+- Never suggest removing a formula that shows up in that list.
+- Never suggest a plain `brew autoremove`. Preview it with `brew autoremove -n` and compare against the list.
+- If a listed formula is only installed as a dependency, suggest `brew install <formula>` so Homebrew records it as installed on request and won't remove it again.
+- A Ruby or Python that bundles its own OpenSSL (the link points inside its install folder) doesn't depend on Homebrew's, but report the bundled OpenSSL version and whether it's still supported.
+
 ## Fix commands
 
-- Homebrew: `brew upgrade <formula>`, `brew upgrade --cask --greedy <cask>`, `brew cleanup`
+- Homebrew: `brew upgrade <formula>`, `brew upgrade --cask --greedy <cask>`, `brew cleanup`. Follow the section above before suggesting `brew autoremove` or `brew uninstall`.
 - Apps not installed with Homebrew: the app's own "Check for updates" option, or the vendor's installer
 - asdf: `asdf install <tool> <version>`, `asdf set <tool> <version>` (asdf 0.16 and later), `asdf uninstall <tool> <version>`
 - Gems: `gem update <gem>`, `gem cleanup <gem>`
