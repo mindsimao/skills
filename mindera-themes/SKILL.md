@@ -14,8 +14,6 @@ The page's own CSS uses the `--mt-*` tokens, either directly or through an adapt
 
 ## What it looks like
 
-The same dashboard slide in all eight themes, from the demo deck in the Presentations repo (`mindera-themes-demo/`):
-
 ![The same dashboard slide in each of the eight themes](screenshots/contact-sheet-dashboard.png)
 
 The theme picker, open on Mindera Dark and Mindera Light:
@@ -37,7 +35,7 @@ More in `screenshots/`: the title and tokens slides in every theme, and a slide 
 | `references/integrations.md` | Adapting existing CSS, bundled apps, Next.js, React, Tailwind, Bootstrap, charts/canvas, iframes, PDF export. |
 | `references/palettes.md` | Brandbook swatches, how each token was derived, adding a palette. |
 | `references/presentations-repo.md` | How the Presentations repo (decks + index) uses it. Read it when working there. |
-| `screenshots/` | Demo deck screenshots for the "What it looks like" section. Regenerate with `mindera-themes-demo/capture-screenshots.js` in the Presentations repo. |
+| `screenshots/` | Example pages in each theme, used in "What it looks like". |
 
 ## Tokens
 
