@@ -1,0 +1,323 @@
+/*
+ * Mindera theme: brand tokens, fonts, glows and theme picker for any HTML/CSS/JS page.
+ * Pair with mindera-theme.js (applies the saved theme and builds the picker).
+ * Colours come from the Mindera Brandbook 2025 (pp. 32–53); see the mindera-themes skill.
+ *
+ * Token contract: every theme sets all of these on <html data-mindera-theme="…">.
+ *   --mt-bg, --mt-surface, --mt-surface2, --mt-border   page, card, inset and line layers
+ *   --mt-text, --mt-muted, --mt-muted2                   text, strongest to faintest
+ *   --mt-accent      fills (buttons, active states, bars)
+ *   --mt-on-accent   text on --mt-accent
+ *   --mt-accent-ink  accent-coloured text/links (darker than --mt-accent on light themes)
+ *   --mt-danger, --mt-success, --mt-warning, --mt-info   status text and icons
+ *   --mt-glow-a, --mt-glow-b                             the brand "glows"
+ * Shared by all themes: --mt-font-head, --mt-font-body, --mt-chart-1 … --mt-chart-6.
+ */
+
+@font-face {
+  font-family: 'PPNeueMachina';
+  src: url('fonts/PPNeueMachina-Regular.otf') format('opentype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --mt-font-head: 'PPNeueMachina', 'Montserrat', system-ui, sans-serif;
+  --mt-font-body: 'Montserrat', system-ui, sans-serif;
+}
+
+/* Themes. The selectors also work on any element, which is how the picker swatches preview a theme. */
+[data-mindera-theme="mindera-dark"], :root {
+  --mt-bg: #0a0a0b;
+  --mt-surface: #18181a;
+  --mt-surface2: #232326;
+  --mt-border: #303033;
+  --mt-text: #f6f6f2;
+  --mt-muted: #9a9a91;
+  --mt-muted2: #66665f;
+  --mt-accent: #ffc700;
+  --mt-on-accent: #0a0a0b;
+  --mt-accent-ink: #ffc700;
+  --mt-danger: #ff5c7a;
+  --mt-success: #45d483;
+  --mt-warning: #ffb547;
+  --mt-info: #56a8ff;
+  --mt-glow-a: #ffc70024;
+  --mt-glow-b: #e6773c1f;
+  color-scheme: dark;
+}
+[data-mindera-theme="mindera-light"] {
+  --mt-bg: #fff9e5;
+  --mt-surface: #ffffff;
+  --mt-surface2: #f6eed2;
+  --mt-border: #e9dfc0;
+  --mt-text: #0a0a0b;
+  --mt-muted: #57544a;
+  --mt-muted2: #858072;
+  --mt-accent: #ffc700;
+  --mt-on-accent: #0a0a0b;
+  --mt-accent-ink: #a8480f;
+  --mt-danger: #c2183f;
+  --mt-success: #18794a;
+  --mt-warning: #9a5b00;
+  --mt-info: #1f63c2;
+  --mt-glow-a: #ffc70059;
+  --mt-glow-b: #e6773c26;
+  color-scheme: light;
+}
+[data-mindera-theme="fintech"] {
+  --mt-bg: #eaeaeb;
+  --mt-surface: #ffffff;
+  --mt-surface2: #e3ecf4;
+  --mt-border: #d3d8de;
+  --mt-text: #0a0a0b;
+  --mt-muted: #4f5660;
+  --mt-muted2: #7c838d;
+  --mt-accent: #00757a;
+  --mt-on-accent: #ffffff;
+  --mt-accent-ink: #00676b;
+  --mt-danger: #c2183f;
+  --mt-success: #18794a;
+  --mt-warning: #9a5b00;
+  --mt-info: #1f63c2;
+  --mt-glow-a: #ccddebcc;
+  --mt-glow-b: #00757a26;
+  color-scheme: light;
+}
+[data-mindera-theme="fashion-tech"] {
+  --mt-bg: #172a3a;
+  --mt-surface: #1e3548;
+  --mt-surface2: #284259;
+  --mt-border: #2f4c66;
+  --mt-text: #f4f7fa;
+  --mt-muted: #a9bccd;
+  --mt-muted2: #7189a0;
+  --mt-accent: #ccddeb;
+  --mt-on-accent: #172a3a;
+  --mt-accent-ink: #ccddeb;
+  --mt-danger: #ff7a93;
+  --mt-success: #5ee0a0;
+  --mt-warning: #ffc56b;
+  --mt-info: #8cc4ff;
+  --mt-glow-a: #345f8366;
+  --mt-glow-b: #4279a740;
+  color-scheme: dark;
+}
+[data-mindera-theme="gaming"] {
+  --mt-bg: #1a084d;
+  --mt-surface: #240e62;
+  --mt-surface2: #2f1677;
+  --mt-border: #3c2290;
+  --mt-text: #f7f0ff;
+  --mt-muted: #c2abea;
+  --mt-muted2: #8a72bd;
+  --mt-accent: #fe76ff;
+  --mt-on-accent: #1a084d;
+  --mt-accent-ink: #fe76ff;
+  --mt-danger: #ff8fa6;
+  --mt-success: #5ee0a0;
+  --mt-warning: #ffc56b;
+  --mt-info: #8cc4ff;
+  --mt-glow-a: #7904eb66;
+  --mt-glow-b: #b800b84d;
+  color-scheme: dark;
+}
+[data-mindera-theme="public-sector"] {
+  --mt-bg: #004346;
+  --mt-surface: #00555a;
+  --mt-surface2: #006368;
+  --mt-border: #12767a;
+  --mt-text: #f2fbf8;
+  --mt-muted: #a8d3cb;
+  --mt-muted2: #6ea69d;
+  --mt-accent: #09bc8a;
+  --mt-on-accent: #002d2f;
+  --mt-accent-ink: #3fdcab;
+  --mt-danger: #ffb3c1;
+  --mt-success: #7cf0b4;
+  --mt-warning: #ffd27a;
+  --mt-info: #a9d4ff;
+  --mt-glow-a: #83abce4d;
+  --mt-glow-b: #09bc8a40;
+  color-scheme: dark;
+}
+[data-mindera-theme="retail-tech"] {
+  --mt-bg: #232326;
+  --mt-surface: #2c2c30;
+  --mt-surface2: #37373c;
+  --mt-border: #424247;
+  --mt-text: #f8f2ee;
+  --mt-muted: #b5aaa3;
+  --mt-muted2: #807670;
+  --mt-accent: #ea9d74;
+  --mt-on-accent: #232326;
+  --mt-accent-ink: #ea9d74;
+  --mt-danger: #ff7a93;
+  --mt-success: #45d483;
+  --mt-warning: #ffb547;
+  --mt-info: #6cb4ff;
+  --mt-glow-a: #e6773c40;
+  --mt-glow-b: #f4cdb826;
+  color-scheme: dark;
+}
+[data-mindera-theme="travel"] {
+  --mt-bg: #1a084d;
+  --mt-surface: #1d1260;
+  --mt-surface2: #261c74;
+  --mt-border: #332a8c;
+  --mt-text: #f0fbff;
+  --mt-muted: #a8c3e0;
+  --mt-muted2: #6f88b0;
+  --mt-accent: #47f7ff;
+  --mt-on-accent: #1a084d;
+  --mt-accent-ink: #47f7ff;
+  --mt-danger: #ff8fa6;
+  --mt-success: #5ee0a0;
+  --mt-warning: #ffc56b;
+  --mt-info: #8cc4ff;
+  --mt-glow-a: #00a6ad59;
+  --mt-glow-b: #47f7ff26;
+  color-scheme: dark;
+}
+
+/* Chart / category series, resolved per theme. Override one in a theme block if it clashes. */
+:root, [data-mindera-theme] {
+  --mt-chart-1: var(--mt-accent);
+  --mt-chart-2: var(--mt-info);
+  --mt-chart-3: var(--mt-success);
+  --mt-chart-4: var(--mt-warning);
+  --mt-chart-5: var(--mt-danger);
+  --mt-chart-6: var(--mt-muted);
+}
+
+/* ---------- Glows ---------- */
+
+/* Paint an element's background with the glows (a slide, a hero, a panel). */
+.mt-glow {
+  background:
+    radial-gradient(60vw 50vh at 92% 0%, var(--mt-glow-a), transparent 70%),
+    radial-gradient(50vw 45vh at 0% 100%, var(--mt-glow-b), transparent 70%),
+    var(--mt-bg);
+}
+/* A fixed glow layer behind a scrolling page. Put it on <body>. */
+.mt-glow-fixed { background: var(--mt-bg); }
+.mt-glow-fixed::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60vw 50vh at 92% 0%, var(--mt-glow-a), transparent 70%),
+    radial-gradient(50vw 45vh at 0% 100%, var(--mt-glow-b), transparent 70%);
+}
+
+/* ---------- Theme picker ---------- */
+
+.mt-picker {
+  position: relative;
+  display: inline-block;
+  font-family: var(--mt-font-body);
+  line-height: 1.4;
+  text-align: left;
+}
+.mt-picker.mt-floating { position: fixed; z-index: 1000; }
+.mt-picker.mt-floating .mt-toggle { opacity: 0.7; }
+.mt-floating[data-position="top-left"] { top: 14px; left: 20px; }
+.mt-floating[data-position="top-right"] { top: 14px; right: 20px; }
+.mt-floating[data-position="bottom-left"] { bottom: 14px; left: 20px; }
+.mt-floating[data-position="bottom-right"] { bottom: 14px; right: 20px; }
+
+.mt-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  background: var(--mt-surface);
+  color: var(--mt-text);
+  border: 1px solid var(--mt-border);
+  border-radius: 999px;
+  padding: 5px 11px 5px 7px;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: normal;
+  cursor: pointer;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+.mt-toggle:hover,
+.mt-toggle[aria-expanded="true"] { opacity: 1; border-color: var(--mt-accent); }
+.mt-toggle::after { content: '▾'; color: var(--mt-muted); font-size: 0.7rem; }
+.mt-toggle:focus-visible,
+.mt-option:focus-visible { outline: 2px solid var(--mt-accent-ink); outline-offset: 2px; }
+
+.mt-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  z-index: 10;
+  box-sizing: border-box;
+  width: 270px;
+  margin: 0;
+  background: var(--mt-surface);
+  border: 1px solid var(--mt-border);
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+.mt-menu[hidden] { display: none; }
+.mt-picker[data-align="right"] .mt-menu { left: auto; right: 0; }
+.mt-picker[data-position$="right"] .mt-menu { left: auto; right: 0; }
+.mt-picker[data-position^="bottom"] .mt-menu { top: auto; bottom: calc(100% + 8px); }
+
+.mt-group {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mt-muted2);
+  padding: 8px 10px 4px;
+}
+.mt-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  background: none;
+  border: 0;
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: var(--mt-text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: normal;
+  text-align: left;
+  cursor: pointer;
+}
+.mt-option:hover { background: var(--mt-surface2); }
+.mt-option[aria-checked="true"] { font-weight: 600; }
+.mt-option[aria-checked="true"]::after { content: '✓'; margin-left: auto; color: var(--mt-accent-ink); }
+
+.mt-swatch {
+  display: inline-flex;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 34px;
+  height: 18px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--mt-border);
+  background: var(--mt-bg);
+}
+.mt-swatch i { flex: 1; }
+.mt-swatch i:nth-child(1) { background: var(--mt-bg); }
+.mt-swatch i:nth-child(2) { background: var(--mt-surface2); }
+.mt-swatch i:nth-child(3) { background: var(--mt-accent); }
+
+@media print {
+  .mt-picker { display: none !important; }
+}

@@ -1,0 +1,66 @@
+/*
+ * Optional element defaults on top of mindera-theme.css, for pages that start from nothing.
+ * Skip this file when the page or app already has its own base styles; map its variables
+ * onto the --mt-* tokens instead (see the mindera-themes skill).
+ */
+
+html { color-scheme: dark light; }
+
+body {
+  margin: 0;
+  background: var(--mt-bg);
+  color: var(--mt-text);
+  font-family: var(--mt-font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--mt-font-head);
+  font-weight: normal;
+  line-height: 1.15;
+}
+
+a { color: var(--mt-accent-ink); }
+a:hover { text-decoration-thickness: 2px; }
+
+small, .mt-muted { color: var(--mt-muted); }
+
+hr { border: 0; border-top: 1px solid var(--mt-border); }
+
+::selection { background: color-mix(in srgb, var(--mt-accent) 35%, transparent); }
+
+:focus-visible { outline: 2px solid var(--mt-accent-ink); outline-offset: 2px; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+button {
+  background: var(--mt-accent);
+  color: var(--mt-on-accent);
+  border: 1px solid var(--mt-accent);
+  border-radius: 999px;
+  padding: 0.5em 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+}
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+input, select, textarea {
+  background: var(--mt-surface);
+  border: 1px solid var(--mt-border);
+  border-radius: 8px;
+  padding: 0.5em 0.8em;
+}
+input::placeholder, textarea::placeholder { color: var(--mt-muted2); }
+
+table { border-collapse: collapse; }
+th, td { border-bottom: 1px solid var(--mt-border); padding: 0.5em 0.75em; text-align: left; }
+th { color: var(--mt-muted); font-weight: 600; }
+
+code, pre {
+  background: var(--mt-surface2);
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+code { padding: 0.1em 0.35em; }
+pre { padding: 1em; overflow: auto; }
