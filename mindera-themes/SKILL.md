@@ -1,27 +1,27 @@
 ---
 name: mindera-themes
-description: Apply Mindera's brand theme to any HTML/CSS/JS page or web app (static pages, slide decks, dashboards, Vite/React/Vue/Next apps, Tailwind or Bootstrap projects). It is a drop-in library with eight brandbook themes (Mindera Dark/Light, Fashion Tech, Fintech, Gaming, Public Sector, Retail Tech, Travel), brand fonts and glows, status and chart colours, and a theme picker that remembers the choice. Use it whenever someone wants something Mindera-branded or "on-brand", in Mindera colours or industry colours, or wants a theme switcher, dark/light mode or brandbook styling on a Mindera page, app, deck or internal tool, even if they don't mention themes. Also use it to add, change or fix a Mindera theme or palette.
+description: Apply Mindera's brand theme to any HTML/CSS/JS page or web app (static pages, slide decks, dashboards, Vite/React/Vue/Next apps, Tailwind or Bootstrap projects). It is a drop-in library with fourteen themes matching Mindera's official Google Slides templates (Mindera, Fashion Tech, Fintech, Gaming, Public Sector, Retail Tech and Travel, each in Dark and Light), brand fonts and glows, status and chart colours, and a theme picker that remembers the choice. Use it whenever someone wants something Mindera-branded or "on-brand", in Mindera colours or industry colours, or wants a theme switcher, dark/light mode or brandbook styling on a Mindera page, app, deck or internal tool, even if they don't mention themes. Also use it to add, change or fix a Mindera theme or palette, or to look up Mindera's brand colours and fonts for something else (including Google Slides).
 ---
 
 # Mindera themes
 
-A small library that gives any web page the Mindera brandbook themes:
+A small library that gives any web page Mindera's brand themes, one per official Google Slides template:
 
-- **`mindera-theme.css`**: colour tokens for eight themes, the brand fonts, glow helpers and the picker's styles.
+- **`mindera-theme.css`**: colour tokens for fourteen themes, the brand fonts, glow helpers and the picker's styles.
 - **`mindera-theme.js`**: a classic script for `<head>`. It applies the saved theme before the first paint, builds the theme picker, and exposes a small API.
 
 The page's own CSS uses the `--mt-*` tokens, either directly or through an adapter that maps the page's existing variables onto them. Switching theme only changes the tokens, so no other CSS has to know which theme is active.
 
 ## What it looks like
 
-![The same dashboard slide in each of the eight themes](screenshots/contact-sheet-dashboard.png)
+![The same dashboard slide in each of the fourteen themes](screenshots/contact-sheet-dashboard.png)
 
 The theme picker, open on Mindera Dark and Mindera Light:
 
 ![Theme picker on Mindera Dark](screenshots/picker-open-mindera-dark.png)
 ![Theme picker on Mindera Light](screenshots/picker-open-mindera-light.png)
 
-More in `screenshots/`: the title and tokens slides in every theme, and a slide that shows all eight palettes side by side.
+More in `screenshots/`: the title and tokens slides in every theme, and a slide that shows all fourteen palettes side by side.
 
 ## Files
 
@@ -33,13 +33,38 @@ More in `screenshots/`: the title and tokens slides in every theme, and a slide 
 | `assets/mindera-base.css` | Optional element defaults (body, headings, links, buttons, inputs, tables). Only for pages with no styles of their own. |
 | `scripts/check_themes.js` | Renders a page in every theme, checks contrast, saves screenshots. |
 | `references/integrations.md` | Adapting existing CSS, bundled apps, Next.js, React, Tailwind, Bootstrap, charts/canvas, iframes, PDF export. |
-| `references/palettes.md` | Brandbook swatches, how each token was derived, adding a palette. |
+| `references/palettes.md` | Where every colour comes from (the Slides templates' Guidelines slides and glows), the type scale, how the other tokens were derived, adding a palette. |
 | `references/presentations-repo.md` | How the Presentations repo (decks + index) uses it. Read it when working there. |
 | `screenshots/` | Example pages in each theme, used in "What it looks like". |
 
+## Themes
+
+There is one theme per official Google Slides template ("2025 Mindera … Slideshow Template Dark/Light"). Each brand has a `-dark` and a `-light` theme:
+
+| Brand | Ids | Accent (fill) | Glow |
+|---|---|---|---|
+| Mindera (the General template) | `mindera-dark`, `mindera-light` | `#FFC700` yellow | amber / yellow |
+| Fashion Tech | `fashion-tech-dark`, `fashion-tech-light` | `#CCDDEB` ice blue (dark), `#345F83` steel blue (light) | navy / ice |
+| Fintech | `fintech-dark`, `fintech-light` | `#327379` teal | deep teal / mint |
+| Gaming | `gaming-dark`, `gaming-light` | `#964191` plum, highlight `#D8AAD5` | violet / lavender |
+| Public Sector | `public-sector-dark`, `public-sector-light` | `#58B48C` green | teal-green / mint |
+| Retail Tech | `retail-tech-dark`, `retail-tech-light` | `#D97C49` copper | burnt orange / peach |
+| Travel & Transportation | `travel-dark`, `travel-light` | `#ADFBFF` cyan (dark), `#1A084D` indigo (light) | blue / cyan |
+
+The templates share one structure, and the themes follow it:
+- Dark themes use a near-black page, `#2A2A2A` cards, white text and `#595959` lines. Travel Dark is the exception: its page is indigo (`#110437`).
+- Light themes use a white page, `#EEEEEE` cards and black text.
+- Each brand changes only its accent and its glow.
+
+`references/palettes.md` has the details.
+
+Before the Dark/Light split there were single-mode ids: `fintech` (light), and `fashion-tech`, `gaming`, `public-sector`, `retail-tech` and `travel` (dark). Those ids still work wherever an id is accepted (saved choices, `data-default`, `data-themes`, `set()`), and each maps to the theme it used to be. CSS selectors such as `[data-mindera-theme="fintech"]` no longer match, so update them to the new ids or to `[data-mindera-mode="light"]`.
+
+**Fonts.** Headings use PP Neue Machina and body text uses Montserrat, as in the brandbook. The Slides templates use Montserrat for everything, because Google Slides can't load PP Neue Machina. When the output is Google Slides, a .pptx, a Google Doc or anything else that can't embed the font, use Montserrat for headings too. Headings then stand out by size, weight and capitals, as they do in the templates: titles in regular weight, small labels in capitals at weight 500–600. The template type scale is in `references/palettes.md`.
+
 ## Tokens
 
-Every theme sets all of these on `<html data-mindera-theme="…">`:
+Every theme sets all of these on `<html data-mindera-theme="…">`. The script also sets `data-mindera-mode="dark"` or `"light"` there, so CSS that only cares about the mode can use `[data-mindera-mode="light"]` instead of listing theme ids.
 
 | Token | Use |
 |---|---|
@@ -53,7 +78,7 @@ Every theme sets all of these on `<html data-mindera-theme="…">`:
 | `--mt-chart-1` … `--mt-chart-6` | series colours for charts and categories |
 | `--mt-font-head`, `--mt-font-body` | PP Neue Machina, Montserrat |
 
-Use `--mt-accent` for anything filled and `--mt-accent-ink` for anything people read. On the light themes the brand accent (yellow, teal) is too pale for text, so `accent-ink` is a darker shade there. Keeping this one rule is what makes all eight themes legible.
+Use `--mt-accent` for anything filled and `--mt-accent-ink` for anything people read. The two differ wherever the brand colour can't be read as text. Mindera Light's yellow, Public Sector Light's green and Retail Tech Light's copper get a darker ink. Fintech Dark's teal, Gaming Dark's plum and Retail Tech Dark's copper get the template's paler highlight colour. Keeping this one rule is what makes all fourteen themes legible.
 
 Everything is namespaced: `--mt-*` variables, `.mt-*` classes and the `data-mindera-theme` attribute. That's deliberate, so the library can't collide with an app's own `--bg`, `.theme-toggle` or another library's `data-theme` (e.g. DaisyUI).
 
@@ -69,7 +94,7 @@ Everything is namespaced: `--mt-*` variables, `.mt-*` classes and the `data-mind
    ```
    Options (all optional):
    - `data-storage-key`: the localStorage key. Pages that share a key and an origin share the choice. Default `mindera-theme`.
-   - `data-default`: a theme id, or `auto` to follow the OS light/dark setting until someone picks. Default `mindera-dark`.
+   - `data-default`: a theme id; `auto` to follow the OS light/dark setting with Mindera until someone picks, or `<brand>-auto` (e.g. `fintech-auto`) to do the same with one industry. Default `mindera-dark`.
    - `data-themes`: a comma-separated subset, in order (e.g. `mindera-light,mindera-dark` for a plain light/dark switch).
    - `data-picker`: `auto` (slot if present, else floating; the default), `float`, `slot`, or `none`.
    - `data-position`: corner for the floating picker: `top-left` (default), `top-right`, `bottom-left`, `bottom-right`.
@@ -89,9 +114,10 @@ Everything is namespaced: `--mt-*` variables, `.mt-*` classes and the `data-mind
 ## JavaScript API
 
 ```js
-MinderaTheme.themes                    // [{ id, name, group }] after data-themes filtering
+MinderaTheme.themes                    // [{ id, name, group, brand, mode }] after data-themes filtering
 MinderaTheme.get()                     // 'mindera-dark'
-MinderaTheme.set('fintech')            // apply and save; set(id, { persist: false }) applies only
+MinderaTheme.mode()                    // 'dark' or 'light'
+MinderaTheme.set('fintech-light')      // apply and save; set(id, { persist: false }) applies only
 MinderaTheme.token('accent')           // '#00757a' (also accepts '--mt-accent')
 const off = MinderaTheme.onChange(id => …)   // also fires for changes made in other tabs
 MinderaTheme.mountPicker(el, { align: 'right' })

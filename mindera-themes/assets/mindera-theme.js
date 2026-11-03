@@ -9,15 +9,22 @@
  *
  * Options, as attributes on the script tag (all optional):
  *   data-storage-key="mindera-theme"   localStorage key; pages sharing a key share the choice
- *   data-default="mindera-dark"        theme when nothing is saved, or "auto" to follow the OS light/dark setting
+ *   data-default="mindera-dark"        theme when nothing is saved; "auto" follows the OS light/dark setting
+ *                                      with Mindera, "<brand>-auto" (e.g. "fintech-auto") with that brand
  *   data-themes="mindera-dark,mindera-light"   limit the picker to these themes, in this order
+ *
+ * Themes: <brand>-dark and <brand>-light for mindera, fashion-tech, fintech, gaming, public-sector,
+ * retail-tech and travel (one per Google Slides template). The old single-mode ids (fintech, gaming, …)
+ * still work anywhere an id is accepted and map to the theme they used to be.
+ * <html> gets data-mindera-theme="<id>" and data-mindera-mode="dark" | "light".
  *   data-picker="auto"                 auto: build inside [data-mindera-theme-picker] if present, else float
  *                                      float: always float · slot: only in the slot · none: no picker
  *   data-position="top-left"           floating corner: top-left, top-right, bottom-left, bottom-right
  *
  * API on window.MinderaTheme:
- *   themes            [{ id, name, group }]
+ *   themes            [{ id, name, group, brand, mode }]
  *   get()             current theme id
+ *   mode()            'dark' or 'light'
  *   set(id, { persist = true })
  *   token(name)       resolved value of a token, e.g. token('accent') or token('--mt-accent')
  *   onChange(fn)      fn(id) after every change (including other tabs); returns an unsubscribe function
@@ -27,34 +34,54 @@
 (function () {
   if (window.MinderaTheme) return;
 
-  const ALL = [
-    { id: 'mindera-dark', name: 'Mindera Dark', group: 'Mindera' },
-    { id: 'mindera-light', name: 'Mindera Light', group: 'Mindera' },
-    { id: 'fashion-tech', name: 'Fashion Tech', group: 'Industries' },
-    { id: 'fintech', name: 'Fintech', group: 'Industries' },
-    { id: 'gaming', name: 'Gaming', group: 'Industries' },
-    { id: 'public-sector', name: 'Public Sector', group: 'Industries' },
-    { id: 'retail-tech', name: 'Retail Tech', group: 'Industries' },
-    { id: 'travel', name: 'Travel & Transportation', group: 'Industries' }
+  // One theme per Google Slides template: seven brands, each in Dark and Light.
+  const BRANDS = [
+    ['mindera', 'Mindera'],
+    ['fashion-tech', 'Fashion Tech'],
+    ['fintech', 'Fintech'],
+    ['gaming', 'Gaming'],
+    ['public-sector', 'Public Sector'],
+    ['retail-tech', 'Retail Tech'],
+    ['travel', 'Travel & Transportation']
   ];
+  const ALL = ['dark', 'light'].flatMap(mode => BRANDS.map(([brand, label]) => ({
+    id: `${brand}-${mode}`,
+    name: `${label} ${mode === 'dark' ? 'Dark' : 'Light'}`,
+    group: mode === 'dark' ? 'Dark' : 'Light',
+    brand,
+    mode
+  })));
+  // Ids from before the Dark/Light split, mapped to the theme each one used to be.
+  const ALIASES = {
+    'fashion-tech': 'fashion-tech-dark',
+    'fintech': 'fintech-light',
+    'gaming': 'gaming-dark',
+    'public-sector': 'public-sector-dark',
+    'retail-tech': 'retail-tech-dark',
+    'travel': 'travel-dark'
+  };
+  const norm = id => (id && ALIASES[id]) || id;
 
   const cfg = (document.currentScript && document.currentScript.dataset) || {};
   const KEY = cfg.storageKey || 'mindera-theme';
   const ATTR = 'data-mindera-theme';
-  const only = cfg.themes ? cfg.themes.split(',').map(s => s.trim()) : null;
+  const MODE_ATTR = 'data-mindera-mode';
+  const only = cfg.themes ? cfg.themes.split(',').map(s => norm(s.trim())) : null;
   const THEMES = only ? only.map(id => ALL.find(t => t.id === id)).filter(Boolean) : ALL;
-  const DEFAULT = cfg.default || 'mindera-dark';
+  const DEFAULT = norm(cfg.default) || 'mindera-dark';
   const html = document.documentElement;
   const media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
   const pickers = [];
   let menuCount = 0;
 
   const valid = id => THEMES.some(t => t.id === id);
-  const saved = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+  const saved = () => { try { return norm(localStorage.getItem(KEY)); } catch (e) { return null; } };
+  // "auto" follows the OS light/dark setting with Mindera; "<brand>-auto" (e.g. "fintech-auto") with that brand.
+  const AUTO = DEFAULT === 'auto' ? 'mindera' : (DEFAULT.endsWith('-auto') ? DEFAULT.slice(0, -5) : null);
 
   function fallback() {
-    if (DEFAULT === 'auto') {
-      const wanted = media && media.matches ? 'mindera-light' : 'mindera-dark';
+    if (AUTO) {
+      const wanted = `${AUTO}-${media && media.matches ? 'light' : 'dark'}`;
       if (valid(wanted)) return wanted;
     }
     return valid(DEFAULT) ? DEFAULT : THEMES[0].id;
@@ -63,11 +90,13 @@
   function paint(id) {
     if (html.getAttribute(ATTR) === id && pickers.every(p => p.shown === id)) return;
     html.setAttribute(ATTR, id);
+    html.setAttribute(MODE_ATTR, id.endsWith('-light') ? 'light' : 'dark');
     pickers.forEach(p => p.sync(id));
     document.dispatchEvent(new CustomEvent('mindera:themechange', { detail: { id } }));
   }
 
   function set(id, opts) {
+    id = norm(id);
     if (!valid(id)) return;
     if (!opts || opts.persist !== false) { try { localStorage.setItem(KEY, id); } catch (e) {} }
     paint(id);
@@ -154,7 +183,7 @@
 
   // Follow changes from other tabs, and the OS setting while nothing is saved.
   window.addEventListener('storage', e => { if (e.key === KEY) paint(current()); });
-  if (media && DEFAULT === 'auto') {
+  if (media && AUTO) {
     const follow = () => { if (!valid(saved())) paint(fallback()); };
     media.addEventListener ? media.addEventListener('change', follow) : media.addListener(follow);
   }
@@ -176,5 +205,10 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', autoMount);
   else autoMount();
 
-  window.MinderaTheme = { themes: THEMES, get: () => html.getAttribute(ATTR), set, token, onChange, mountPicker };
+  window.MinderaTheme = {
+    themes: THEMES,
+    get: () => html.getAttribute(ATTR),
+    mode: () => html.getAttribute(MODE_ATTR),
+    set, token, onChange, mountPicker
+  };
 })();

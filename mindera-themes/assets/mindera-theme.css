@@ -1,9 +1,11 @@
 /*
  * Mindera theme: brand tokens, fonts, glows and theme picker for any HTML/CSS/JS page.
  * Pair with mindera-theme.js (applies the saved theme and builds the picker).
- * Colours come from the Mindera Brandbook 2025 (pp. 32–53); see the mindera-themes skill.
+ * Colours come from Mindera's 2025 Google Slides templates (each template's Guidelines slide and its
+ * glow backgrounds), with the Mindera Brandbook 2025 for the fonts; see the mindera-themes skill.
  *
  * Token contract: every theme sets all of these on <html data-mindera-theme="…">.
+ * The JS also sets data-mindera-mode="dark" | "light" on <html>, for CSS that depends only on the mode.
  *   --mt-bg, --mt-surface, --mt-surface2, --mt-border   page, card, inset and line layers
  *   --mt-text, --mt-muted, --mt-muted2                   text, strongest to faintest
  *   --mt-accent      fills (buttons, active states, bars)
@@ -31,161 +33,291 @@
   --mt-font-body: 'Montserrat', system-ui, sans-serif;
 }
 
-/* Themes. The selectors also work on any element, which is how the picker swatches preview a theme. */
+/* Themes, one per Google Slides template (seven brands, each Dark and Light). The selectors also work on any
+ * element, which is how the picker swatches preview a theme. Old ids (fintech, gaming, …) are mapped by the JS. */
+/* Mindera Dark: Mindera 2025 General Slideshow Template Dark */
 [data-mindera-theme="mindera-dark"], :root {
   --mt-bg: #0a0a0b;
-  --mt-surface: #18181a;
-  --mt-surface2: #232326;
-  --mt-border: #303033;
-  --mt-text: #f6f6f2;
-  --mt-muted: #9a9a91;
-  --mt-muted2: #66665f;
+  --mt-surface: #2a2a2a;
+  --mt-surface2: #38383b;
+  --mt-border: #595959;
+  --mt-text: #ffffff;
+  --mt-muted: #b3b3b3;
+  --mt-muted2: #808080;
   --mt-accent: #ffc700;
-  --mt-on-accent: #0a0a0b;
+  --mt-on-accent: #000000;
   --mt-accent-ink: #ffc700;
-  --mt-danger: #ff5c7a;
-  --mt-success: #45d483;
-  --mt-warning: #ffb547;
-  --mt-info: #56a8ff;
-  --mt-glow-a: #ffc70024;
-  --mt-glow-b: #e6773c1f;
-  color-scheme: dark;
-}
-[data-mindera-theme="mindera-light"] {
-  --mt-bg: #fff9e5;
-  --mt-surface: #ffffff;
-  --mt-surface2: #f6eed2;
-  --mt-border: #e9dfc0;
-  --mt-text: #0a0a0b;
-  --mt-muted: #57544a;
-  --mt-muted2: #858072;
-  --mt-accent: #ffc700;
-  --mt-on-accent: #0a0a0b;
-  --mt-accent-ink: #a8480f;
-  --mt-danger: #c2183f;
-  --mt-success: #18794a;
-  --mt-warning: #9a5b00;
-  --mt-info: #1f63c2;
-  --mt-glow-a: #ffc70059;
-  --mt-glow-b: #e6773c26;
-  color-scheme: light;
-}
-[data-mindera-theme="fintech"] {
-  --mt-bg: #eaeaeb;
-  --mt-surface: #ffffff;
-  --mt-surface2: #e3ecf4;
-  --mt-border: #d3d8de;
-  --mt-text: #0a0a0b;
-  --mt-muted: #4f5660;
-  --mt-muted2: #7c838d;
-  --mt-accent: #00757a;
-  --mt-on-accent: #ffffff;
-  --mt-accent-ink: #00676b;
-  --mt-danger: #c2183f;
-  --mt-success: #18794a;
-  --mt-warning: #9a5b00;
-  --mt-info: #1f63c2;
-  --mt-glow-a: #ccddebcc;
-  --mt-glow-b: #00757a26;
-  color-scheme: light;
-}
-[data-mindera-theme="fashion-tech"] {
-  --mt-bg: #172a3a;
-  --mt-surface: #1e3548;
-  --mt-surface2: #284259;
-  --mt-border: #2f4c66;
-  --mt-text: #f4f7fa;
-  --mt-muted: #a9bccd;
-  --mt-muted2: #7189a0;
-  --mt-accent: #ccddeb;
-  --mt-on-accent: #172a3a;
-  --mt-accent-ink: #ccddeb;
-  --mt-danger: #ff7a93;
-  --mt-success: #5ee0a0;
-  --mt-warning: #ffc56b;
-  --mt-info: #8cc4ff;
-  --mt-glow-a: #345f8366;
-  --mt-glow-b: #4279a740;
-  color-scheme: dark;
-}
-[data-mindera-theme="gaming"] {
-  --mt-bg: #1a084d;
-  --mt-surface: #240e62;
-  --mt-surface2: #2f1677;
-  --mt-border: #3c2290;
-  --mt-text: #f7f0ff;
-  --mt-muted: #c2abea;
-  --mt-muted2: #8a72bd;
-  --mt-accent: #fe76ff;
-  --mt-on-accent: #1a084d;
-  --mt-accent-ink: #fe76ff;
-  --mt-danger: #ff8fa6;
-  --mt-success: #5ee0a0;
-  --mt-warning: #ffc56b;
-  --mt-info: #8cc4ff;
-  --mt-glow-a: #7904eb66;
-  --mt-glow-b: #b800b84d;
-  color-scheme: dark;
-}
-[data-mindera-theme="public-sector"] {
-  --mt-bg: #004346;
-  --mt-surface: #00555a;
-  --mt-surface2: #006368;
-  --mt-border: #12767a;
-  --mt-text: #f2fbf8;
-  --mt-muted: #a8d3cb;
-  --mt-muted2: #6ea69d;
-  --mt-accent: #09bc8a;
-  --mt-on-accent: #002d2f;
-  --mt-accent-ink: #3fdcab;
-  --mt-danger: #ffb3c1;
-  --mt-success: #7cf0b4;
-  --mt-warning: #ffd27a;
-  --mt-info: #a9d4ff;
-  --mt-glow-a: #83abce4d;
-  --mt-glow-b: #09bc8a40;
-  color-scheme: dark;
-}
-[data-mindera-theme="retail-tech"] {
-  --mt-bg: #232326;
-  --mt-surface: #2c2c30;
-  --mt-surface2: #37373c;
-  --mt-border: #424247;
-  --mt-text: #f8f2ee;
-  --mt-muted: #b5aaa3;
-  --mt-muted2: #807670;
-  --mt-accent: #ea9d74;
-  --mt-on-accent: #232326;
-  --mt-accent-ink: #ea9d74;
-  --mt-danger: #ff7a93;
-  --mt-success: #45d483;
+  --mt-danger: #ff6b85;
+  --mt-success: #4fd68a;
   --mt-warning: #ffb547;
   --mt-info: #6cb4ff;
-  --mt-glow-a: #e6773c40;
-  --mt-glow-b: #f4cdb826;
+  --mt-glow-a: #ffc70059;
+  --mt-glow-b: #ffb00040;
   color-scheme: dark;
 }
-[data-mindera-theme="travel"] {
-  --mt-bg: #1a084d;
-  --mt-surface: #1d1260;
-  --mt-surface2: #261c74;
-  --mt-border: #332a8c;
-  --mt-text: #f0fbff;
-  --mt-muted: #a8c3e0;
-  --mt-muted2: #6f88b0;
-  --mt-accent: #47f7ff;
-  --mt-on-accent: #1a084d;
-  --mt-accent-ink: #47f7ff;
-  --mt-danger: #ff8fa6;
-  --mt-success: #5ee0a0;
-  --mt-warning: #ffc56b;
-  --mt-info: #8cc4ff;
-  --mt-glow-a: #00a6ad59;
-  --mt-glow-b: #47f7ff26;
+/* Mindera Light: Mindera 2025 General Slideshow Template Light */
+[data-mindera-theme="mindera-light"] {
+  --mt-bg: #ffffff;
+  --mt-surface: #eeeeee;
+  --mt-surface2: #fff9e5;
+  --mt-border: #cccccc;
+  --mt-text: #000000;
+  --mt-muted: #4d4d4d;
+  --mt-muted2: #757575;
+  --mt-accent: #ffc700;
+  --mt-on-accent: #000000;
+  --mt-accent-ink: #8a5a00;
+  --mt-danger: #b8163b;
+  --mt-success: #16703f;
+  --mt-warning: #8a5200;
+  --mt-info: #1d5bb3;
+  --mt-glow-a: #ffc700b3;
+  --mt-glow-b: #ffdc6180;
+  color-scheme: light;
+}
+/* Fashion Tech Dark: Mindera 2025 Fashion Tech Slideshow Template Dark */
+[data-mindera-theme="fashion-tech-dark"] {
+  --mt-bg: #0a0a0b;
+  --mt-surface: #2a2a2a;
+  --mt-surface2: #38383b;
+  --mt-border: #595959;
+  --mt-text: #ffffff;
+  --mt-muted: #b3b3b3;
+  --mt-muted2: #808080;
+  --mt-accent: #ccddeb;
+  --mt-on-accent: #000000;
+  --mt-accent-ink: #ccddeb;
+  --mt-danger: #ff6b85;
+  --mt-success: #4fd68a;
+  --mt-warning: #ffb547;
+  --mt-info: #6cb4ff;
+  --mt-glow-a: #345f8359;
+  --mt-glow-b: #2a4c6840;
   color-scheme: dark;
+}
+/* Fashion Tech Light: Mindera 2025 Fashion Tech Slideshow Template Light */
+[data-mindera-theme="fashion-tech-light"] {
+  --mt-bg: #ffffff;
+  --mt-surface: #eeeeee;
+  --mt-surface2: #ccddeb;
+  --mt-border: #cccccc;
+  --mt-text: #000000;
+  --mt-muted: #4d4d4d;
+  --mt-muted2: #757575;
+  --mt-accent: #345f83;
+  --mt-on-accent: #ffffff;
+  --mt-accent-ink: #345f83;
+  --mt-danger: #b8163b;
+  --mt-success: #16703f;
+  --mt-warning: #8a5200;
+  --mt-info: #1d5bb3;
+  --mt-glow-a: #ccddebb3;
+  --mt-glow-b: #f4f1e880;
+  color-scheme: light;
+}
+/* Fintech Dark: Mindera 2025 Fintech Slideshow Template Dark */
+[data-mindera-theme="fintech-dark"] {
+  --mt-bg: #0a0a0b;
+  --mt-surface: #2a2a2a;
+  --mt-surface2: #38383b;
+  --mt-border: #595959;
+  --mt-text: #ffffff;
+  --mt-muted: #b3b3b3;
+  --mt-muted2: #808080;
+  --mt-accent: #327379;
+  --mt-on-accent: #ffffff;
+  --mt-accent-ink: #ccddeb;
+  --mt-danger: #ff6b85;
+  --mt-success: #4fd68a;
+  --mt-warning: #ffb547;
+  --mt-info: #6cb4ff;
+  --mt-glow-a: #32737959;
+  --mt-glow-b: #0d3d4440;
+  color-scheme: dark;
+}
+/* Fintech Light: Mindera 2025 Fintech Slideshow Template Light */
+[data-mindera-theme="fintech-light"] {
+  --mt-bg: #ffffff;
+  --mt-surface: #eeeeee;
+  --mt-surface2: #ccddeb;
+  --mt-border: #cccccc;
+  --mt-text: #000000;
+  --mt-muted: #4d4d4d;
+  --mt-muted2: #757575;
+  --mt-accent: #327379;
+  --mt-on-accent: #ffffff;
+  --mt-accent-ink: #327379;
+  --mt-danger: #b8163b;
+  --mt-success: #16703f;
+  --mt-warning: #8a5200;
+  --mt-info: #1d5bb3;
+  --mt-glow-a: #74b2b4b3;
+  --mt-glow-b: #a9cdcf80;
+  color-scheme: light;
+}
+/* Gaming Dark: Mindera 2025 Gaming Slideshow Template Dark */
+[data-mindera-theme="gaming-dark"] {
+  --mt-bg: #0a0a0b;
+  --mt-surface: #2a2a2a;
+  --mt-surface2: #1c1449;
+  --mt-border: #595959;
+  --mt-text: #ffffff;
+  --mt-muted: #b3b3b3;
+  --mt-muted2: #808080;
+  --mt-accent: #964191;
+  --mt-on-accent: #ffffff;
+  --mt-accent-ink: #d8aad5;
+  --mt-danger: #ff6b85;
+  --mt-success: #4fd68a;
+  --mt-warning: #ffb547;
+  --mt-info: #6cb4ff;
+  --mt-glow-a: #6605cc59;
+  --mt-glow-b: #530fa140;
+  color-scheme: dark;
+}
+/* Gaming Light: Mindera 2025 Gaming Slideshow Template Light */
+[data-mindera-theme="gaming-light"] {
+  --mt-bg: #ffffff;
+  --mt-surface: #eeeeee;
+  --mt-surface2: #f0dcee;
+  --mt-border: #cccccc;
+  --mt-text: #000000;
+  --mt-muted: #4d4d4d;
+  --mt-muted2: #757575;
+  --mt-accent: #964191;
+  --mt-on-accent: #ffffff;
+  --mt-accent-ink: #964191;
+  --mt-danger: #b8163b;
+  --mt-success: #16703f;
+  --mt-warning: #8a5200;
+  --mt-info: #1d5bb3;
+  --mt-glow-a: #e4d4f5b3;
+  --mt-glow-b: #d8aad580;
+  color-scheme: light;
+}
+/* Public Sector Dark: Mindera 2025 Public Sector Slideshow Template Dark */
+[data-mindera-theme="public-sector-dark"] {
+  --mt-bg: #0a0a0b;
+  --mt-surface: #2a2a2a;
+  --mt-surface2: #174246;
+  --mt-border: #595959;
+  --mt-text: #ffffff;
+  --mt-muted: #b3b3b3;
+  --mt-muted2: #808080;
+  --mt-accent: #58b48c;
+  --mt-on-accent: #000000;
+  --mt-accent-ink: #58b48c;
+  --mt-danger: #ff6b85;
+  --mt-success: #4fd68a;
+  --mt-warning: #ffb547;
+  --mt-info: #6cb4ff;
+  --mt-glow-a: #138f7959;
+  --mt-glow-b: #0b645d40;
+  color-scheme: dark;
+}
+/* Public Sector Light: Mindera 2025 Public Sector Slideshow Template Light */
+[data-mindera-theme="public-sector-light"] {
+  --mt-bg: #ffffff;
+  --mt-surface: #eeeeee;
+  --mt-surface2: #fff9e5;
+  --mt-border: #cccccc;
+  --mt-text: #000000;
+  --mt-muted: #4d4d4d;
+  --mt-muted2: #757575;
+  --mt-accent: #58b48c;
+  --mt-on-accent: #000000;
+  --mt-accent-ink: #174246;
+  --mt-danger: #b8163b;
+  --mt-success: #16703f;
+  --mt-warning: #8a5200;
+  --mt-info: #1d5bb3;
+  --mt-glow-a: #61d1aab3;
+  --mt-glow-b: #a9dcc980;
+  color-scheme: light;
+}
+/* Retail Tech Dark: Mindera 2025 Retail Tech Slideshow Template Dark */
+[data-mindera-theme="retail-tech-dark"] {
+  --mt-bg: #0a0a0b;
+  --mt-surface: #2a2a2a;
+  --mt-surface2: #38383b;
+  --mt-border: #595959;
+  --mt-text: #ffffff;
+  --mt-muted: #b3b3b3;
+  --mt-muted2: #808080;
+  --mt-accent: #d97c49;
+  --mt-on-accent: #000000;
+  --mt-accent-ink: #e0a27c;
+  --mt-danger: #ff6b85;
+  --mt-success: #4fd68a;
+  --mt-warning: #ffb547;
+  --mt-info: #6cb4ff;
+  --mt-glow-a: #a8592e59;
+  --mt-glow-b: #944e2a40;
+  color-scheme: dark;
+}
+/* Retail Tech Light: Mindera 2025 Retail Tech Slideshow Template Light */
+[data-mindera-theme="retail-tech-light"] {
+  --mt-bg: #ffffff;
+  --mt-surface: #eeeeee;
+  --mt-surface2: #f4cdb8;
+  --mt-border: #cccccc;
+  --mt-text: #000000;
+  --mt-muted: #4d4d4d;
+  --mt-muted2: #757575;
+  --mt-accent: #d97c49;
+  --mt-on-accent: #000000;
+  --mt-accent-ink: #9c4a1c;
+  --mt-danger: #b8163b;
+  --mt-success: #16703f;
+  --mt-warning: #8a5200;
+  --mt-info: #1d5bb3;
+  --mt-glow-a: #eb9568b3;
+  --mt-glow-b: #f4cdb880;
+  color-scheme: light;
+}
+/* Travel & Transportation Dark: Mindera 2025 Travel & Transportation Slideshow Template Dark */
+[data-mindera-theme="travel-dark"] {
+  --mt-bg: #110437;
+  --mt-surface: #1a084d;
+  --mt-surface2: #26156a;
+  --mt-border: #595959;
+  --mt-text: #ffffff;
+  --mt-muted: #b3b3b3;
+  --mt-muted2: #808080;
+  --mt-accent: #adfbff;
+  --mt-on-accent: #110437;
+  --mt-accent-ink: #adfbff;
+  --mt-danger: #ff6b85;
+  --mt-success: #4fd68a;
+  --mt-warning: #ffb547;
+  --mt-info: #6cb4ff;
+  --mt-glow-a: #338db059;
+  --mt-glow-b: #26457b40;
+  color-scheme: dark;
+}
+/* Travel & Transportation Light: Mindera 2025 Travel & Transportation Slideshow Template Light */
+[data-mindera-theme="travel-light"] {
+  --mt-bg: #ffffff;
+  --mt-surface: #eeeeee;
+  --mt-surface2: #adfbff;
+  --mt-border: #cccccc;
+  --mt-text: #000000;
+  --mt-muted: #4d4d4d;
+  --mt-muted2: #757575;
+  --mt-accent: #1a084d;
+  --mt-on-accent: #ffffff;
+  --mt-accent-ink: #1a084d;
+  --mt-danger: #b8163b;
+  --mt-success: #16703f;
+  --mt-warning: #8a5200;
+  --mt-info: #1d5bb3;
+  --mt-glow-a: #7ee6f1b3;
+  --mt-glow-b: #ccddeb80;
+  color-scheme: light;
 }
 
-/* Chart / category series, resolved per theme. Override one in a theme block if it clashes. */
+/* Chart / category series, resolved per theme. Override a clashing one below (not in the theme block,
+ * which this rule would beat). */
 :root, [data-mindera-theme] {
   --mt-chart-1: var(--mt-accent);
   --mt-chart-2: var(--mt-info);
@@ -194,6 +326,11 @@
   --mt-chart-5: var(--mt-danger);
   --mt-chart-6: var(--mt-muted);
 }
+/* Public Sector's accent is green, like success: use the brandbook's Public Sector blue instead. */
+[data-mindera-theme="public-sector-dark"] { --mt-chart-3: #83abce; }
+[data-mindera-theme="public-sector-light"] { --mt-chart-3: #5b87ad; }
+/* Travel Dark's cyan accent sits too close to the info blue. */
+[data-mindera-theme="travel-dark"] { --mt-chart-2: #b39dff; }
 
 /* ---------- Glows ---------- */
 
@@ -262,6 +399,8 @@
   z-index: 10;
   box-sizing: border-box;
   width: 270px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
   margin: 0;
   background: var(--mt-surface);
   border: 1px solid var(--mt-border);

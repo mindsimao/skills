@@ -42,7 +42,7 @@ grep -rnoE "#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)" --include=*.css --include=*.js -
 
 Swap the ones that should follow the theme for tokens or `color-mix(in srgb, var(--mt-…) N%, transparent)`. Leave photos, logos and third-party embeds alone.
 
-**Category colours on light themes.** Extra hues tuned for dark backgrounds (`--blue`, `--teal`…) wash out on Mindera Light and Fintech. Either map them to `--mt-chart-*` / `--mt-info` / `--mt-success`, or give `[data-mindera-theme="mindera-light"], [data-mindera-theme="fintech"]` darker versions in the adapter. Also check each theme's accent for clashes: Fintech's accent is teal, and Gaming/Travel sit on deep purple.
+**Category colours on light themes.** Extra hues tuned for dark backgrounds (`--blue`, `--teal`…) wash out on the seven light themes. Either map them to `--mt-chart-*` / `--mt-info` / `--mt-success`, or give `[data-mindera-mode="light"]` darker versions in the adapter. Select on the mode rather than listing theme ids, so the rule covers every light theme. Also check each theme's accent for clashes: Fintech's accent is teal, Public Sector's is green, Gaming's is plum, Travel Dark sits on indigo, and Travel Light's accent is a near-black indigo.
 
 **Glows.** Add `.mt-glow-fixed` to `<body>` for a scrolling page. Use `.mt-glow` on elements that fill the viewport themselves (slides, hero sections). If the element's background is already set elsewhere, copy the two radial gradients from `.mt-glow` into that rule instead.
 

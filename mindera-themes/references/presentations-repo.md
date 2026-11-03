@@ -18,7 +18,7 @@ The root `fonts/` folder is the library's `fonts/`, so `mindera-theme.css` resol
    <script src="../mindera-theme.js" data-storage-key="presentations-theme"></script>
    ```
    The storage key `presentations-theme` is what makes the index and every deck share one choice. Keep the default theme (`mindera-dark`), because the decks were designed dark first.
-2. Write the deck's `theme.css` adapter. Most decks share the same palette (`--yellow`, `--black`, `--dark`, `--dark2`, `--dark3`, `--text`, `--muted`, `--muted2`, `--border`, `--red`, `--blue`, `--teal`, `--purple`, `--green`, `--orange`), so `ai-horizontal-hub-and-spoke/theme.css` is a working template. It maps the palette, darkens the category hues on the light themes, re-points filled marks at `--mt-accent`, and puts the glows on `.slide`.
+2. Write the deck's `theme.css` adapter. Most decks share the same palette (`--yellow`, `--black`, `--dark`, `--dark2`, `--dark3`, `--text`, `--muted`, `--muted2`, `--border`, `--red`, `--blue`, `--teal`, `--purple`, `--green`, `--orange`), so `ai-horizontal-hub-and-spoke/theme.css` is a working template. It maps the palette, darkens the category hues on the light themes, re-points filled marks at `--mt-accent`, and puts the glows on `.slide`. Select the light themes with `[data-mindera-mode="light"]` rather than listing ids, and name a single theme only for a clash specific to it (e.g. `[data-mindera-theme="travel-dark"]`, whose page is indigo).
 3. Leave the picker floating (the default, top-left). Decks put the Mindera brand mark top-right.
 4. In the deck's `export-pdf.js`, add `.mt-picker` to the injected `display: none` selectors.
 5. Keep `<script src="../shortcuts.js"></script>` before `</body>` (G then H goes back to the index).
